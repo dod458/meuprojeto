@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aplicação Financeira</title>
+    <link rel="stylesheet" type="text/css" href="styles.css">
+</head>
+<body>
+    <h1>Aplicação Financeira</h1>
+    <form id="add_receita_form">
+        <label for="data">Data:</label>
+        <input type="date" id="data" name="data" required>
+        <br>
+        <label for="descricao">Descrição:</label>
+        <input type="text" id="descricao" name="descricao" required>
+        <br>
+        <label for="valor">Valor:</label>
+        <input type="number" id="valor" name="valor" step="0.01" required>
+        <br>
+        <button type="submit">Adicionar Receita</button>
+    </form>
+    <form id="add_despesa_form">
+        <label for="data">Data:</label>
+        <input type="date" id="data" name="data" required>
+        <br>
+        <label for="descricao">Descrição:</label>
+        <input type="text" id="descricao" name="descricao" required>
+        <br>
+        <label for="valor">Valor:</label>
+        <input type="number" id="valor" name="valor" step="0.01" required>
+        <br>
+        <button type="submit">Adicionar Despesa</button>
+    </form>
+    <button id="gerar_relatorio_btn">Gerar Relatório</button>
+
+    <script>
+        document.getElementById('add_receita_form').addEventListener('submit', function(event) {
+    event.preventDefault();
+    fetch('/add_receita', {
+        method: 'POST',
+        body: new FormData(event.target)
+    }).then(response => response.json())
+    .then(data => {
+        if (data.status === 'ok') {
+            alert('Receita adicionada com sucesso!');
+        } else {
+            alert('Ocorreu um erro ao adicionar a receita.');
+        }
+    }).catch(error => {
+        console.error('Error:', error);
+        alert('Ocorreu um erro ao adicionar a receita.');
+    });
+});
+
+document.getElementById('add_despesa_form').addEventListener('submit', function(event) {
+    event.preventDefault();
+    fetch('/add_despesa', {
+        method: 'POST',
+        body: new FormData(event.target)
+    }).then(response => response.json())
+    .then(data => {
+        if (data.status === 'ok') {
+            alert('Despesa adicionada com sucesso!');
+        } else {
+            alert('Ocorreu um erro ao adicionar a despesa.');
+        }
+    }).catch(error => {
+        console.error('Error:', error);
+        alert('Ocorreu um erro ao adicionar a despesa.');
+    });
+});
+
+document.getElementById('gerar_relatorio_btn').addEventListener('click', function() {
+    fetch('/gerar_relatorio', {
+        method: 'GET'
+    }).then(response => response.json())
+    .then(data => {
+        if (data.status === 'ok') {
+            alert('Relatório gerado com sucesso!');
+        } else {
+            alert('Ocorreu um erro ao gerar o relatório.');
+        }
+    }).catch(error => {
+        console.error('Error:', error);
+        alert('Ocorreu um erro ao gerar o relatório.');
+    });
+});
+    </script>
+</body>
+</html>
